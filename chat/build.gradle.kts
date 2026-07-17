@@ -1,9 +1,7 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.jpa)
-    alias(libs.plugins.kotlin.spring)
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
+    id("chatik.spring-boot-service")
+    id("java-library")
+    kotlin("plugin.jpa")
 }
 
 group = "com.droid"
