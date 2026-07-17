@@ -1,7 +1,6 @@
 plugins {
     id("java-library")
     id("chatik.kotlin-common")
-    id("org.springframework.boot")
 }
 
 group = "com.droid"

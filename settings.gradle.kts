@@ -9,6 +9,8 @@ pluginManagement {
 
 rootProject.name = "chatik"
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include("app")
 
 include("user")

@@ -1,6 +1,5 @@
 plugins {
     id("chatik.kotlin-common")
-    id("org.springframework.boot")
     id("io.spring.dependency-management")
 }
 
