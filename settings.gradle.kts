@@ -9,3 +9,8 @@ pluginManagement {
 rootProject.name = "chatik"
 
 include("app")
+
+include("user")
+include("chat")
+include("notification")
+include("common")
