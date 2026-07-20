@@ -1,4 +1,4 @@
-package com.droid.user.domain.model
+package com.droid.chatik.domain.model
 
 import java.util.UUID
 

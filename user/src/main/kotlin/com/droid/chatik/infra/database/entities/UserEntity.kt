@@ -1,6 +1,6 @@
-package com.droid.user.infra.database.entities
+package com.droid.chatik.infra.database.entities
 
-import com.droid.user.domain.model.UserId
+import com.droid.chatik.domain.model.UserId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -38,7 +38,7 @@ class UserEntity(
     var hashedPassword: String,
 
     @Column(nullable = false)
-    var hasVerifiedEmail: Boolean,
+    var hasVerifiedEmail: Boolean = false,
 
     @CreationTimestamp
     var createdAt: Instant = Instant.now(),
