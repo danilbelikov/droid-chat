@@ -1,6 +1,5 @@
 plugins {
     id("chatik.spring-boot-app")
-    id("org.springframework.boot")
 }
 
 group = "com.droid"
@@ -11,6 +10,8 @@ dependencies {
     implementation(projects.chat)
     implementation(projects.notification)
     implementation(projects.common)
+    implementation(libs.spring.boot.starter.security)
+    implementation(libs.kotlin.reflect)
 
     implementation(libs.spring.boot.starter.data.jpa)
     runtimeOnly(libs.postgresql)
