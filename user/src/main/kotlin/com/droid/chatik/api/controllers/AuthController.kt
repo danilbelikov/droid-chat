@@ -1,7 +1,10 @@
 package com.droid.chatik.api.controllers
 
+import com.droid.chatik.api.dto.AuthenticatedUserDto
+import com.droid.chatik.api.dto.LoginRequest
 import com.droid.chatik.api.dto.RegisterRequest
 import com.droid.chatik.api.dto.UserDto
+import com.droid.chatik.api.mappers.toAuthenticatedUserDto
 import com.droid.chatik.api.mappers.toUserDto
 import com.droid.chatik.service.auth.AuthService
 import jakarta.validation.Valid
@@ -23,5 +26,15 @@ class AuthController(private val authService: AuthService) {
             username = body.username,
             password = body.password,
         ).toUserDto()
+    }
+
+    @PostMapping(value = ["/login"])
+    fun login(
+        @RequestBody body: LoginRequest,
+    ): AuthenticatedUserDto {
+        return authService.login(
+            email = body.email,
+            password = body.password
+        ).toAuthenticatedUserDto()
     }
 }

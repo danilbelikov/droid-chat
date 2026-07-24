@@ -31,4 +31,3 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET_BASE64}
-  expiration-minutes: 15
