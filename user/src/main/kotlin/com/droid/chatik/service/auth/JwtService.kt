@@ -13,16 +13,15 @@ import kotlin.io.encoding.Base64
 
 @Service
 class JwtService(
-    @param:Value("\${jtw.secret}") private val secretBase64: String,
-    @param:Value("\${jtw.expiration-minutes}") private val expirationMinutes: Int,
+    @param:Value("\${jwt.secret}") private val secretBase64: String,
+    @param:Value("\${jwt.expiration-minutes}") private val expirationMinutes: Int,
 ) {
+
     private val secretKey = Keys.hmacShaKeyFor(
         Base64.decode(secretBase64)
     )
-
     private val accessTokenValidityMs = expirationMinutes * 60 * 1000L
     val refreshTokenValidityMs = 30 * 24 * 60 * 60 * 1000L
-
 
     fun generateAccessToken(userId: UserId): String {
         return generateToken(
@@ -52,9 +51,9 @@ class JwtService(
         return tokenType == "refresh"
     }
 
-    fun getUserIdFromToken(token: String): UserId? {
+    fun getUserIdFromToken(token: String): UserId {
         val claims = parseAllClaims(token) ?: throw InvalidTokenException(
-            message = "The attached JWT token is not valid",
+            message = "The attached JWT token is not valid"
         )
         return UUID.fromString(claims.subject)
     }
@@ -76,8 +75,8 @@ class JwtService(
     }
 
     private fun parseAllClaims(token: String): Claims? {
-        val rawToken = if (token.startsWith("Bearer")) {
-            token.removePrefix("Bearer")
+        val rawToken = if (token.startsWith("Bearer ")) {
+            token.removePrefix("Bearer ")
         } else token
 
         return try {
