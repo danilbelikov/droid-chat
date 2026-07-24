@@ -2,6 +2,7 @@ package com.droid.chatik.api.controllers
 
 import com.droid.chatik.api.dto.AuthenticatedUserDto
 import com.droid.chatik.api.dto.LoginRequest
+import com.droid.chatik.api.dto.RefreshRequest
 import com.droid.chatik.api.dto.RegisterRequest
 import com.droid.chatik.api.dto.UserDto
 import com.droid.chatik.api.mappers.toAuthenticatedUserDto
@@ -36,5 +37,14 @@ class AuthController(private val authService: AuthService) {
             email = body.email,
             password = body.password
         ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping(value = ["/refresh"])
+    fun refresh(
+        @RequestBody body: RefreshRequest,
+    ): AuthenticatedUserDto {
+        return authService
+            .refresh(body.refreshToken)
+            .toAuthenticatedUserDto()
     }
 }
