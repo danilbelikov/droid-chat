@@ -1,5 +1,6 @@
 package com.droid.chatik.api.exception_handling
 
+import com.droid.chatik.domain.exception.EmailNotVerifiedException
 import com.droid.chatik.domain.exception.InvalidCredentialsException
 import com.droid.chatik.domain.exception.InvalidTokenException
 import com.droid.chatik.domain.exception.UserAlreadyExistException
@@ -54,6 +55,13 @@ class AuthExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     fun onInvalidCredentials(e: InvalidCredentialsException) = mapOf(
         "code" to "INVALID_CREDENTIALS",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(EmailNotVerifiedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onEmailNotVerified(e: EmailNotVerifiedException) = mapOf(
+        "code" to "EMAIL_NOT_VERIFIED",
         "message" to e.message
     )
 

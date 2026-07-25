@@ -1,5 +1,6 @@
 package com.droid.chatik.service.auth
 
+import com.droid.chatik.domain.exception.EmailNotVerifiedException
 import com.droid.chatik.domain.exception.InvalidCredentialsException
 import com.droid.chatik.domain.exception.InvalidTokenException
 import com.droid.chatik.domain.exception.UserAlreadyExistException
@@ -23,10 +24,13 @@ class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val emailVerificationService: EmailVerificationService
 ) {
 
+    @Transactional
     fun register(email: String, username: String, password: String): User {
+        val trimmedEmail = email.trim()
         val user = userRepository.findByEmailOrUsername(
             email = email.trim(),
             username = username.trim(),
@@ -36,13 +40,15 @@ class AuthService(
             throw UserAlreadyExistException()
         }
 
-        val savedUser = userRepository.save(
+        val savedUser = userRepository.saveAndFlush(
             UserEntity(
-                email = email.trim(),
+                email = trimmedEmail,
                 username = username.trim(),
                 hashedPassword = passwordEncoder.encode(password)
             )
         ).toUser()
+
+        val token = emailVerificationService.createVerificationToken(trimmedEmail)
         return savedUser
     }
 
@@ -58,6 +64,9 @@ class AuthService(
         }
 
         //TODO: нужно для verified email сделать
+        if (!user.hasVerifiedEmail) {
+            throw EmailNotVerifiedException()
+        }
         return user.id?.let { userId ->
             val accessToken = jwtService.generateAccessToken(userId)
             val refreshToken = jwtService.generateRefreshToken(userId)

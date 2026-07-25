@@ -8,15 +8,20 @@ import com.droid.chatik.api.dto.UserDto
 import com.droid.chatik.api.mappers.toAuthenticatedUserDto
 import com.droid.chatik.api.mappers.toUserDto
 import com.droid.chatik.service.auth.AuthService
+import com.droid.chatik.service.auth.EmailVerificationService
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(value = ["/api/auth"])
-class AuthController(private val authService: AuthService) {
+class AuthController(private val authService: AuthService,
+                     private val emailVerificationService: EmailVerificationService
+) {
 
     @PostMapping(value = ["/register"])
     fun register(
@@ -53,5 +58,12 @@ class AuthController(private val authService: AuthService) {
         @RequestBody body: RefreshRequest,
     ) {
         return authService.logout(body.refreshToken)
+    }
+
+    @GetMapping(value = ["/verify"])
+    fun verifyEmail(
+        @RequestParam token: String,
+    ) {
+        emailVerificationService.verifyEmail(token)
     }
 }
