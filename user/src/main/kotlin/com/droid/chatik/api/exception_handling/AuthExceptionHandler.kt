@@ -3,6 +3,7 @@ package com.droid.chatik.api.exception_handling
 import com.droid.chatik.domain.exception.EmailNotVerifiedException
 import com.droid.chatik.domain.exception.InvalidCredentialsException
 import com.droid.chatik.domain.exception.InvalidTokenException
+import com.droid.chatik.domain.exception.SamePasswordException
 import com.droid.chatik.domain.exception.UserAlreadyExistException
 import com.droid.chatik.domain.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -65,4 +66,10 @@ class AuthExceptionHandler {
         "message" to e.message
     )
 
+    @ExceptionHandler(SamePasswordException::class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    fun onSamePassword(e: SamePasswordException) = mapOf(
+        "code" to "SAME_PASSWORD",
+        "message" to e.message
+    )
 }
