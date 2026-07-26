@@ -1,23 +1,23 @@
 package com.droid.chatik.infra.database.repositories
 
 import com.droid.chatik.infra.database.entities.EmailVerificationEntity
+import com.droid.chatik.infra.database.entities.PasswordResetTokenEntity
 import com.droid.chatik.infra.database.entities.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import java.time.Instant
 
-interface EmailVerificationTokenRepository : JpaRepository<EmailVerificationEntity, Long> {
+interface PasswordResetTokenRepository : JpaRepository<PasswordResetTokenEntity, Long> {
 
-    fun findByToken(token: String): EmailVerificationEntity?
+    fun findByToken(token: String): PasswordResetTokenEntity?
     fun deleteByExpiresAtLessThan(now: Instant)
-
     @Modifying
     @Query(
         """
-            UPDATE EmailVerificationEntity e
-            SET e.usedAt = CURRENT_TIMESTAMP()
-            WHERE e.user = :user
+            UPDATE PasswordResetTokenEntity p
+            SET p.usedAt = CURRENT_TIMESTAMP()
+            WHERE p.user = :user
         """
     )
     fun invalidateActiveTokensForUser(user: UserEntity)
