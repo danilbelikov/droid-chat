@@ -12,11 +12,12 @@ interface PasswordResetTokenRepository : JpaRepository<PasswordResetTokenEntity,
 
     fun findByToken(token: String): PasswordResetTokenEntity?
     fun deleteByExpiresAtLessThan(now: Instant)
+
     @Modifying
     @Query(
         """
             UPDATE PasswordResetTokenEntity p
-            SET p.usedAt = CURRENT_TIMESTAMP()
+            SET p.usedAt = CURRENT_TIMESTAMP
             WHERE p.user = :user
         """
     )
